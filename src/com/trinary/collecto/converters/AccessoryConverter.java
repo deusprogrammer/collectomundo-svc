@@ -4,48 +4,46 @@ import java.net.URI;
 
 import javax.ws.rs.core.UriInfo;
 
-import com.trinary.collecto.entities.Game;
+import com.trinary.collecto.entities.Accessory;
+import com.trinary.collecto.resources.AccessoryResource;
 import com.trinary.collecto.resources.CompanyResource;
 import com.trinary.collecto.resources.ConsoleResource;
-import com.trinary.collecto.resources.GameResource;
-import com.trinary.collecto.ro.GameRO;
+import com.trinary.collecto.ro.AccessoryRO;
 import com.trinary.ro.v2.converter.ROConverter;
 
-public class GameConverter extends ROConverter<GameRO, Game> {
-	public GameConverter(UriInfo uriInfo) {
+// TODO Implement AccessoryConverter
+public class AccessoryConverter extends ROConverter<AccessoryRO, Accessory> {
+
+	public AccessoryConverter(UriInfo uriInfo) {
 		super(uriInfo);
 	}
 
 	@Override
-	protected Game _convertRO(GameRO ro) {
-		Game entity = new Game();
+	protected Accessory _convertRO(AccessoryRO ro) {
+		Accessory entity = new Accessory();
 		entity.setId(ro.getId());
-		entity.setTitle(ro.getTitle());
-		entity.setDescription(ro.getDescription());
-		entity.setConsole(ro.getConsole());
+		entity.setName(ro.getName());
 		entity.setCompany(ro.getCompany());
-		entity.setVariant(ro.getVariant());
+		entity.setConsole(ro.getConsole());
 		return entity;
 	}
 
 	@Override
-	protected GameRO _convertEntity(Game entity) {
-		GameRO ro = new GameRO();
+	protected AccessoryRO _convertEntity(Accessory entity) {
+		AccessoryRO ro = new AccessoryRO();
 		ro.setId(entity.getId());
-		ro.setTitle(entity.getTitle());
-		ro.setDescription(entity.getDescription());
-		ro.setConsole(entity.getConsole());
+		ro.setName(entity.getName());
 		ro.setCompany(entity.getCompany());
-		ro.setVariant(entity.getVariant());
+		ro.setConsole(entity.getConsole());
 		return ro;
 	}
 
 	@Override
-	protected GameRO _addLinks(GameRO object) {
+	protected AccessoryRO _addLinks(AccessoryRO object) {
 		URI self = this.getUriInfo()
 				.getBaseUriBuilder()
-				.path(GameResource.class)
-				.path(GameResource.class, "getGame")
+				.path(AccessoryResource.class)
+				.path(AccessoryResource.class, "getAccessory")
 				.build(object.getId());
 		
 		URI console = this.getUriInfo()
@@ -66,4 +64,5 @@ public class GameConverter extends ROConverter<GameRO, Game> {
 		
 		return object;
 	}
+
 }

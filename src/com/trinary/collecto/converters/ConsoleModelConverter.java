@@ -4,48 +4,48 @@ import java.net.URI;
 
 import javax.ws.rs.core.UriInfo;
 
-import com.trinary.collecto.entities.Game;
+import com.trinary.collecto.entities.ConsoleModel;
 import com.trinary.collecto.resources.CompanyResource;
+import com.trinary.collecto.resources.ConsoleModelResource;
 import com.trinary.collecto.resources.ConsoleResource;
-import com.trinary.collecto.resources.GameResource;
-import com.trinary.collecto.ro.GameRO;
+import com.trinary.collecto.ro.ConsoleModelRO;
 import com.trinary.ro.v2.converter.ROConverter;
 
-public class GameConverter extends ROConverter<GameRO, Game> {
-	public GameConverter(UriInfo uriInfo) {
+// TODO Implement ConsoleModelConverter
+public class ConsoleModelConverter extends ROConverter<ConsoleModelRO, ConsoleModel> {
+
+	public ConsoleModelConverter(UriInfo uriInfo) {
 		super(uriInfo);
 	}
 
 	@Override
-	protected Game _convertRO(GameRO ro) {
-		Game entity = new Game();
+	protected ConsoleModel _convertRO(ConsoleModelRO ro) {
+		ConsoleModel entity = new ConsoleModel();
 		entity.setId(ro.getId());
-		entity.setTitle(ro.getTitle());
-		entity.setDescription(ro.getDescription());
-		entity.setConsole(ro.getConsole());
+		entity.setName(ro.getName());
+		entity.setModelNumber(ro.getModelNumber());
 		entity.setCompany(ro.getCompany());
-		entity.setVariant(ro.getVariant());
+		entity.setConsole(ro.getConsole());
 		return entity;
 	}
 
 	@Override
-	protected GameRO _convertEntity(Game entity) {
-		GameRO ro = new GameRO();
+	protected ConsoleModelRO _convertEntity(ConsoleModel entity) {
+		ConsoleModelRO ro = new ConsoleModelRO();
 		ro.setId(entity.getId());
-		ro.setTitle(entity.getTitle());
-		ro.setDescription(entity.getDescription());
-		ro.setConsole(entity.getConsole());
+		ro.setName(entity.getName());
+		ro.setModelNumber(entity.getModelNumber());
 		ro.setCompany(entity.getCompany());
-		ro.setVariant(entity.getVariant());
+		ro.setConsole(entity.getConsole());
 		return ro;
 	}
 
 	@Override
-	protected GameRO _addLinks(GameRO object) {
+	protected ConsoleModelRO _addLinks(ConsoleModelRO object) {
 		URI self = this.getUriInfo()
 				.getBaseUriBuilder()
-				.path(GameResource.class)
-				.path(GameResource.class, "getGame")
+				.path(ConsoleModelResource.class)
+				.path(ConsoleModelResource.class, "getConsoleModel")
 				.build(object.getId());
 		
 		URI console = this.getUriInfo()
@@ -66,4 +66,5 @@ public class GameConverter extends ROConverter<GameRO, Game> {
 		
 		return object;
 	}
+
 }

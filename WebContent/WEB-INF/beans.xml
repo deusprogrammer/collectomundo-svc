@@ -6,5 +6,7 @@
   <class>com.trinary.collecto.services.couchbase.SpringGameService</class>
   <class>com.trinary.collecto.services.couchbase.SpringConsoleService</class>
   <class>com.trinary.collecto.services.couchbase.SpringCompanyService</class>
+  <class>com.trinary.collecto.services.couchbase.SpringConsoleModelService</class>
+  <class>com.trinary.collecto.services.couchbase.SpringAccessoryService</class>
  </alternatives>
 </beans>

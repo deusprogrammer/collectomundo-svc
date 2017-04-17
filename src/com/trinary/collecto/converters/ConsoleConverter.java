@@ -54,9 +54,23 @@ public class ConsoleConverter extends ROConverter<ConsoleRO, Console> {
 				.path(ConsoleResource.class, "getConsoleGames")
 				.build(object.getId());
 		
+		URI models = this.getUriInfo()
+				.getBaseUriBuilder()
+				.path(ConsoleResource.class)
+				.path(ConsoleResource.class, "getConsoleModels")
+				.build(object.getId());
+		
+		URI accessories = this.getUriInfo()
+				.getBaseUriBuilder()
+				.path(ConsoleResource.class)
+				.path(ConsoleResource.class, "getConsoleAccessories")
+				.build(object.getId());
+		
 		object.addLink("self", self.toString());
 		object.addLink("company", company.toString());
 		object.addLink("games", games.toString());
+		object.addLink("models", models.toString());
+		object.addLink("accessories", accessories.toString());
 		
 		return object;
 	}
