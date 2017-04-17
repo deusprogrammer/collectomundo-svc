@@ -16,6 +16,7 @@ import javax.ws.rs.core.UriInfo;
 
 import com.trinary.collecto.converters.GameConverter;
 import com.trinary.collecto.entities.Game;
+import com.trinary.collecto.exceptions.CollectomundoBusinessException;
 import com.trinary.collecto.ro.GameRO;
 import com.trinary.collecto.services.GameService;
 
@@ -29,7 +30,7 @@ public class GameResource {
 	private GameService gameService;
 	
 	@POST
-	public Response createGame(GameRO gameRo) {
+	public Response createGame(GameRO gameRo) throws CollectomundoBusinessException {
 		GameConverter converter = new GameConverter(uriInfo);
 		
 		Game game = converter.convertRO(gameRo);
@@ -59,7 +60,7 @@ public class GameResource {
 	
 	@Path("/{id}")
 	@PUT
-	public Response updateGame(@PathParam("id") String id, GameRO gameRo) {
+	public Response updateGame(@PathParam("id") String id, GameRO gameRo) throws CollectomundoBusinessException {
 		GameConverter converter = new GameConverter(uriInfo);
 		
 		Game game = converter.convertRO(gameRo);

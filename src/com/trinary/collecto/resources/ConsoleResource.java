@@ -23,6 +23,7 @@ import com.trinary.collecto.entities.Accessory;
 import com.trinary.collecto.entities.Console;
 import com.trinary.collecto.entities.ConsoleModel;
 import com.trinary.collecto.entities.Game;
+import com.trinary.collecto.exceptions.CollectomundoBusinessException;
 import com.trinary.collecto.ro.ConsoleRO;
 import com.trinary.collecto.services.AccessoryService;
 import com.trinary.collecto.services.ConsoleModelService;
@@ -50,7 +51,7 @@ public class ConsoleResource {
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createConsole(ConsoleRO consoleRo) {
+	public Response createConsole(ConsoleRO consoleRo) throws CollectomundoBusinessException {
 		ConsoleConverter converter = new ConsoleConverter(uriInfo);
 		Console console = converter.convertRO(consoleRo);
 		
@@ -101,7 +102,7 @@ public class ConsoleResource {
 	
 	@Path("/{id}")
 	@PUT
-	public Response updateConsole(@PathParam("id") String id, ConsoleRO consoleRo) {
+	public Response updateConsole(@PathParam("id") String id, ConsoleRO consoleRo) throws CollectomundoBusinessException {
 		ConsoleConverter converter = new ConsoleConverter(uriInfo);
 		Console console = converter.convertRO(consoleRo);
 		

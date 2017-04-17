@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Alternative;
+import javax.inject.Inject;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -14,11 +15,14 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import com.trinary.collecto.configs.CouchbaseConfig;
 import com.trinary.collecto.dao.ConsoleModelRepository;
 import com.trinary.collecto.entities.ConsoleModel;
+import com.trinary.collecto.exceptions.CollectomundoBusinessException;
 import com.trinary.collecto.services.ConsoleModelService;
 
 @ApplicationScoped
 @Alternative
 public class SpringConsoleModelService implements ConsoleModelService {
+	@Inject SpringValidationService validator;
+	
 	private ConfigurableApplicationContext ctx;
 	private ConsoleModelRepository modelDao;
 	
@@ -44,7 +48,10 @@ public class SpringConsoleModelService implements ConsoleModelService {
 	}
 
 	@Override
-	public ConsoleModel createConsoleModel(ConsoleModel model) {
+	public ConsoleModel createConsoleModel(ConsoleModel model) throws CollectomundoBusinessException {
+		validator.validateCompany(model.getCompany());
+		validator.validateConsole(model.getConsole());
+		
 		String id = UUID.randomUUID().toString();
 		model.setId(id);
 		
@@ -56,6 +63,21 @@ public class SpringConsoleModelService implements ConsoleModelService {
 	@Override
 	public ConsoleModel getConsoleModelByModelNumber(String modelNumber) {
 		return modelDao.findByModelNumber(modelNumber);
+	}
+
+	@Override
+	public ConsoleModel updateConsoleModel(String id, ConsoleModel model) throws CollectomundoBusinessException {
+		validator.validateCompany(model.getCompany());
+		validator.validateConsole(model.getConsole());
+		
+		ConsoleModel cm = modelDao.findOne(id);
+		
+		if (cm == null) {
+			return createConsoleModel(model);
+		}
+		
+		model.setId(id);
+		return modelDao.save(model);
 	}
 
 }

@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Alternative;
+import javax.inject.Inject;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -14,11 +15,14 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import com.trinary.collecto.configs.CouchbaseConfig;
 import com.trinary.collecto.dao.ConsoleRepository;
 import com.trinary.collecto.entities.Console;
+import com.trinary.collecto.exceptions.CollectomundoBusinessException;
 import com.trinary.collecto.services.ConsoleService;
 
 @ApplicationScoped
 @Alternative
 public class SpringConsoleService implements ConsoleService {
+	@Inject SpringValidationService validator;
+	
 	private ConfigurableApplicationContext ctx;
 	private ConsoleRepository consoleDao;
 	
@@ -44,7 +48,9 @@ public class SpringConsoleService implements ConsoleService {
 	}
 
 	@Override
-	public Console createConsole(Console console) {
+	public Console createConsole(Console console) throws CollectomundoBusinessException {
+		validator.validateCompany(console.getCompany());
+		
 		Console c = consoleDao.findByAbbreviation(console.getAbbreviation());
 		
 		if (c != null) {
@@ -56,7 +62,9 @@ public class SpringConsoleService implements ConsoleService {
 	}
 
 	@Override
-	public Console updateConsole(String abbrev, Console console) {
+	public Console updateConsole(String abbrev, Console console) throws CollectomundoBusinessException {
+		validator.validateCompany(console.getCompany());
+		
 		Console c = consoleDao.findByAbbreviation(abbrev);
 		
 		if (c == null) {

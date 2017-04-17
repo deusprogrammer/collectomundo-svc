@@ -4,6 +4,7 @@ import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -14,6 +15,7 @@ import javax.ws.rs.core.UriInfo;
 
 import com.trinary.collecto.converters.AccessoryConverter;
 import com.trinary.collecto.entities.Accessory;
+import com.trinary.collecto.exceptions.CollectomundoBusinessException;
 import com.trinary.collecto.ro.AccessoryRO;
 import com.trinary.collecto.services.AccessoryService;
 
@@ -28,7 +30,7 @@ public class AccessoryResource {
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createAccessory(AccessoryRO accessoryRo) {
+	public Response createAccessory(AccessoryRO accessoryRo) throws CollectomundoBusinessException {
 		AccessoryConverter converter = new AccessoryConverter(uriInfo);
 		
 		Accessory accessory = converter.convertRO(accessoryRo);
@@ -43,6 +45,17 @@ public class AccessoryResource {
 		AccessoryConverter converter = new AccessoryConverter(uriInfo);
 		
 		Accessory accessory = accessoryService.getAccessory(id);
+		
+		return Response.ok(converter.convertEntity(accessory)).build();
+	}
+	
+	@Path("/{id}")
+	@PUT
+	public Response updateAccessory(@PathParam("id") String id, AccessoryRO accessoryRo) throws CollectomundoBusinessException {
+		AccessoryConverter converter = new AccessoryConverter(uriInfo);
+		
+		Accessory accessory = converter.convertRO(accessoryRo);
+		accessory = accessoryService.updateAccessory(id, accessory);
 		
 		return Response.ok(converter.convertEntity(accessory)).build();
 	}
