@@ -11,6 +11,7 @@ import javax.inject.Inject;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.data.domain.PageRequest;
 
 import com.trinary.collecto.configs.CouchbaseConfig;
 import com.trinary.collecto.dao.GameRepository;
@@ -38,8 +39,8 @@ public class SpringGameService implements GameService {
 	}
 
 	@Override
-	public List<Game> getGames() {
-		return (List<Game>)gameDao.findAll();
+	public List<Game> getGames(Integer page, Integer pageSize) {
+		return gameDao.findAll(new PageRequest(page - 1, pageSize)).getContent();
 	}
 
 	@Override
@@ -49,8 +50,8 @@ public class SpringGameService implements GameService {
 
 	@Override
 	public Game createGame(Game game) throws CollectomundoBusinessException {
-		validator.validateCompany(game.getCompany());
-		validator.validateConsole(game.getConsole());
+		//validator.validateCompany(game.getCompany());
+		//validator.validateConsole(game.getConsole());
 		
 		game.setId(UUID.randomUUID().toString());
 		return gameDao.save(game);
@@ -58,8 +59,8 @@ public class SpringGameService implements GameService {
 
 	@Override
 	public Game updateGame(String id, Game game) throws CollectomundoBusinessException {
-		validator.validateCompany(game.getCompany());
-		validator.validateConsole(game.getConsole());
+		//validator.validateCompany(game.getCompany());
+		//validator.validateConsole(game.getConsole());
 		
 		Game g = gameDao.findOne(id);
 		
@@ -72,7 +73,7 @@ public class SpringGameService implements GameService {
 	}
 
 	@Override
-	public List<Game> getGamesByConsole(String console) {
-		return gameDao.findByConsole(console);
+	public List<Game> getGamesByConsole(String console, Integer page, Integer pageSize) {
+		return gameDao.findByConsole(console, new PageRequest(page - 1, pageSize)).getContent();
 	}
 }

@@ -9,9 +9,9 @@ import com.trinary.collecto.exceptions.CollectomundoBusinessException;
 
 @ApplicationScoped
 public interface ConsoleService {
-	public List<Console> getConsoles();
+	public List<Console> getConsoles(Integer page, Integer pageSize);
 	public Console getConsole(String id);
 	public Console createConsole(Console console) throws CollectomundoBusinessException;
 	public Console updateConsole(String id, Console console) throws CollectomundoBusinessException;
-	public List<Console> getConsolesByCompany(String company);
+	public List<Console> getConsolesByCompany(String company, Integer page, Integer pageSize);
 }

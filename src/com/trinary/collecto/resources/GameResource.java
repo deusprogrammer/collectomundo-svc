@@ -9,6 +9,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -40,8 +41,15 @@ public class GameResource {
 	}
 	
 	@GET
-	public Response getGames() {
-		List<Game> games = gameService.getGames();
+	public Response getGames(@QueryParam("page") Integer page, @QueryParam("pageSize") Integer pageSize) {
+		List<Game> games = gameService.getGames(page, pageSize);
+		
+		if (page == null || page <= 0) {
+			page = 1;
+		}
+		if (pageSize == null || pageSize <= 0) {
+			pageSize = 100;
+		}
 		
 		GameConverter converter = new GameConverter(uriInfo);
 		

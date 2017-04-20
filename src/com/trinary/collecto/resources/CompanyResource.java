@@ -9,6 +9,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -35,10 +36,17 @@ public class CompanyResource {
 	ConsoleService consoleService;
 	
 	@GET
-	public Response getCompanies() {
+	public Response getCompanies(@QueryParam("page") Integer page, @QueryParam("pageSize") Integer pageSize) {
 		CompanyConverter converter = new CompanyConverter(uriInfo);
 		
-		List<Company> companies = companyService.getCompanies();
+		if (page == null || page <= 0) {
+			page = 1;
+		}
+		if (pageSize == null || pageSize <= 0) {
+			pageSize = 100;
+		}
+		
+		List<Company> companies = companyService.getCompanies(page, pageSize);
 		
 		return Response.ok(converter.convertEntityList(companies)).build();
 	}
@@ -65,10 +73,17 @@ public class CompanyResource {
 	
 	@Path("/{id}/consoles")
 	@GET
-	public Response getCompanyConsoles(@PathParam("id") String id) {
+	public Response getCompanyConsoles(@PathParam("id") String id, @QueryParam("page") Integer page, @QueryParam("pageSize") Integer pageSize) {
 		ConsoleConverter converter = new ConsoleConverter(uriInfo);
 		
-		List<Console> consoles = consoleService.getConsolesByCompany(id);
+		if (page == null || page <= 0) {
+			page = 1;
+		}
+		if (pageSize == null || pageSize <= 0) {
+			pageSize = 100;
+		}
+		
+		List<Console> consoles = consoleService.getConsolesByCompany(id, page, pageSize);
 		
 		return Response.ok(converter.convertEntityList(consoles)).build();
 	}

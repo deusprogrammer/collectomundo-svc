@@ -11,6 +11,7 @@ import javax.inject.Inject;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.data.domain.PageRequest;
 
 import com.trinary.collecto.configs.CouchbaseConfig;
 import com.trinary.collecto.dao.ConsoleModelRepository;
@@ -38,8 +39,8 @@ public class SpringConsoleModelService implements ConsoleModelService {
 	}
 	
 	@Override
-	public List<ConsoleModel> getConsoleModels(String console) {
-		return modelDao.findByConsole(console);
+	public List<ConsoleModel> getConsoleModels(String console, Integer page, Integer pageSize) {
+		return modelDao.findByConsole(console, new PageRequest(page - 1, pageSize)).getContent();
 	}
 
 	@Override
@@ -49,8 +50,8 @@ public class SpringConsoleModelService implements ConsoleModelService {
 
 	@Override
 	public ConsoleModel createConsoleModel(ConsoleModel model) throws CollectomundoBusinessException {
-		validator.validateCompany(model.getCompany());
-		validator.validateConsole(model.getConsole());
+		//validator.validateCompany(model.getCompany());
+		//validator.validateConsole(model.getConsole());
 		
 		String id = UUID.randomUUID().toString();
 		model.setId(id);
@@ -67,8 +68,8 @@ public class SpringConsoleModelService implements ConsoleModelService {
 
 	@Override
 	public ConsoleModel updateConsoleModel(String id, ConsoleModel model) throws CollectomundoBusinessException {
-		validator.validateCompany(model.getCompany());
-		validator.validateConsole(model.getConsole());
+		//validator.validateCompany(model.getCompany());
+		//validator.validateConsole(model.getConsole());
 		
 		ConsoleModel cm = modelDao.findOne(id);
 		

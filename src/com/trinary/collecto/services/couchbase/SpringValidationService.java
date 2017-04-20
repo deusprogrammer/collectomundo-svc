@@ -27,7 +27,11 @@ public class SpringValidationService {
 	}
 	
 	public void validateCompany(String company) throws CollectomundoBusinessException {
-		Company c = companyDao.findByName(company);
+		if (company == null) {
+			return;
+		}
+		
+		Company c = companyDao.findByAbbreviation(company);
 		
 		if (c == null) {
 			throw new CollectomundoBusinessException("Company " + company + " does not exist.");
@@ -35,6 +39,10 @@ public class SpringValidationService {
 	}
 
 	public void validateConsole(String console) throws CollectomundoBusinessException {
+		if (console == null) {
+			return;
+		}
+		
 		Console c = consoleDao.findByAbbreviation(console);
 		
 		if (c == null) {

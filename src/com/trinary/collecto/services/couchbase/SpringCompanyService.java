@@ -10,6 +10,7 @@ import javax.enterprise.inject.Alternative;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.data.domain.PageRequest;
 
 import com.trinary.collecto.configs.CouchbaseConfig;
 import com.trinary.collecto.dao.CompanyRepository;
@@ -34,18 +35,18 @@ public class SpringCompanyService implements CompanyService {
 	}
 
 	@Override
-	public List<Company> getCompanies() {
-		return (List<Company>) companyDao.findAll();
+	public List<Company> getCompanies(Integer page, Integer pageSize) {
+		return companyDao.findAll(new PageRequest(page - 1, pageSize)).getContent();
 	}
 
 	@Override
 	public Company getCompany(String name) {
-		return companyDao.findByName(name);
+		return companyDao.findByAbbreviation(name);
 	}
 
 	@Override
 	public Company createCompany(Company company) {
-		Company c = companyDao.findByName(company.getName());
+		Company c = companyDao.findByAbbreviation(company.getName());
 		
 		if (c != null) {
 			return company;
@@ -57,7 +58,7 @@ public class SpringCompanyService implements CompanyService {
 
 	@Override
 	public Company updateCompany(String name, Company company) {
-		Company c = companyDao.findByName(name);
+		Company c = companyDao.findByAbbreviation(name);
 		
 		if (c == null) {
 			createCompany(company);

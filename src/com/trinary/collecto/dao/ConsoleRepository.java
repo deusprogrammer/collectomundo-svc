@@ -1,12 +1,12 @@
 package com.trinary.collecto.dao;
 
-import java.util.List;
-
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.trinary.collecto.entities.Console;
 
-public interface ConsoleRepository extends CrudRepository<Console, String> {
+public interface ConsoleRepository extends PagingAndSortingRepository<Console, String> {
 	public Console findByAbbreviation(String abbreviation);
-	public List<Console> findByCompany(String company);
+	public Slice<Console> findByCompany(String company, Pageable pageable);
 }

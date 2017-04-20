@@ -11,6 +11,7 @@ import javax.inject.Inject;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.data.domain.PageRequest;
 
 import com.trinary.collecto.configs.CouchbaseConfig;
 import com.trinary.collecto.dao.AccessoryRepository;
@@ -38,8 +39,8 @@ public class SpringAccessoryService implements AccessoryService {
 	}
 
 	@Override
-	public List<Accessory> getAccessories(String console) {
-		return accessoryDao.findByConsole(console);
+	public List<Accessory> getAccessories(String console, Integer page, Integer pageSize) {
+		return accessoryDao.findByConsole(console, new PageRequest(page - 1, pageSize)).getContent();
 	}
 
 	@Override
@@ -49,8 +50,8 @@ public class SpringAccessoryService implements AccessoryService {
 
 	@Override
 	public Accessory createAccessory(Accessory accessory) throws CollectomundoBusinessException {
-		validator.validateCompany(accessory.getCompany());
-		validator.validateConsole(accessory.getConsole());
+		//validator.validateCompany(accessory.getCompany());
+		//validator.validateConsole(accessory.getConsole());
 		
 		String id = UUID.randomUUID().toString();
 		accessory.setId(id);
@@ -62,8 +63,8 @@ public class SpringAccessoryService implements AccessoryService {
 
 	@Override
 	public Accessory updateAccessory(String id, Accessory accessory) throws CollectomundoBusinessException {
-		validator.validateCompany(accessory.getCompany());
-		validator.validateConsole(accessory.getConsole());
+		//validator.validateCompany(accessory.getCompany());
+		//validator.validateConsole(accessory.getConsole());
 		
 		Accessory a = accessoryDao.findOne(id);
 		

@@ -10,6 +10,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -41,10 +42,17 @@ public class ConsoleResource {
 	@Inject ConsoleModelService modelService;
 	
 	@GET
-	public Response getConsoles() {
+	public Response getConsoles(@QueryParam("page") Integer page, @QueryParam("pageSize") Integer pageSize) {
 		ConsoleConverter converter = new ConsoleConverter(uriInfo);
 		
-		List<Console> consoles = consoleService.getConsoles();
+		if (page == null || page <= 0) {
+			page = 1;
+		}
+		if (pageSize == null || pageSize <= 0) {
+			pageSize = 100;
+		}
+		
+		List<Console> consoles = consoleService.getConsoles(page, pageSize);
 		
 		return Response.ok(converter.convertEntityList(consoles)).build();
 	}
@@ -72,30 +80,51 @@ public class ConsoleResource {
 	
 	@Path("/{id}/games")
 	@GET
-	public Response getConsoleGames(@PathParam("id") String id) {
+	public Response getConsoleGames(@PathParam("id") String id, @QueryParam("page") Integer page, @QueryParam("pageSize") Integer pageSize) {
 		GameConverter converter = new GameConverter(uriInfo);
 		
-		List<Game> games = gameService.getGamesByConsole(id);
+		if (page == null || page <= 0) {
+			page = 1;
+		}
+		if (pageSize == null || pageSize <= 0) {
+			pageSize = 100;
+		}
+		
+		List<Game> games = gameService.getGamesByConsole(id, page, pageSize);
 		
 		return Response.ok(converter.convertEntityList(games)).build();
 	}
 	
 	@Path("/{id}/models")
 	@GET
-	public Response getConsoleModels(@PathParam("id") String id) {
+	public Response getConsoleModels(@PathParam("id") String id, @QueryParam("page") Integer page, @QueryParam("pageSize") Integer pageSize) {
 		ConsoleModelConverter converter = new ConsoleModelConverter(uriInfo);
 		
-		List<ConsoleModel> models = modelService.getConsoleModels(id);
+		if (page == null || page <= 0) {
+			page = 1;
+		}
+		if (pageSize == null || pageSize <= 0) {
+			pageSize = 100;
+		}
+		
+		List<ConsoleModel> models = modelService.getConsoleModels(id, page, pageSize);
 		
 		return Response.ok(converter.convertEntityList(models)).build();
 	}
 	
 	@Path("/{id}/accessories")
 	@GET
-	public Response getConsoleAccessories(@PathParam("id") String id) {
+	public Response getConsoleAccessories(@PathParam("id") String id, @QueryParam("page") Integer page, @QueryParam("pageSize") Integer pageSize) {
 		AccessoryConverter converter = new AccessoryConverter(uriInfo);
 		
-		List<Accessory> accessories = accessoryService.getAccessories(id);
+		if (page == null || page <= 0) {
+			page = 1;
+		}
+		if (pageSize == null || pageSize <= 0) {
+			pageSize = 100;
+		}
+		
+		List<Accessory> accessories = accessoryService.getAccessories(id, page, pageSize);
 		
 		return Response.ok(converter.convertEntityList(accessories)).build();
 	}

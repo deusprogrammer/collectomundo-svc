@@ -9,7 +9,7 @@ import com.trinary.collecto.exceptions.CollectomundoBusinessException;
 
 @ApplicationScoped
 public interface AccessoryService {
-	public List<Accessory> getAccessories(String console);
+	public List<Accessory> getAccessories(String console, Integer page, Integer pageSize);
 	public Accessory getAccessory(String id);
 	public Accessory createAccessory(Accessory accessory) throws CollectomundoBusinessException;
 	public Accessory updateAccessory(String id, Accessory accessory) throws CollectomundoBusinessException;

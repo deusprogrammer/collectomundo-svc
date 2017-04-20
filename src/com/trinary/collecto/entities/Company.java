@@ -11,6 +11,9 @@ public class Company {
 	private String id;
 	
 	@Field
+	private String abbreviation;
+	
+	@Field
 	private String name;
 
 	public String getId() {
@@ -19,6 +22,14 @@ public class Company {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getAbbreviation() {
+		return abbreviation;
+	}
+
+	public void setAbbreviation(String abbreviation) {
+		this.abbreviation = abbreviation;
 	}
 
 	public String getName() {

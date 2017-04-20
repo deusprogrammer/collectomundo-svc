@@ -8,9 +8,9 @@ import com.trinary.collecto.exceptions.CollectomundoBusinessException;
 
 @ApplicationScoped
 public interface GameService {
-	public List<Game> getGames();
+	public List<Game> getGames(Integer page, Integer pageSize);
 	public Game createGame(Game game) throws CollectomundoBusinessException;
 	public Game updateGame(String id, Game game) throws CollectomundoBusinessException;
 	public Game getGame(String id);
-	public List<Game> getGamesByConsole(String console);
+	public List<Game> getGamesByConsole(String console, Integer page, Integer pageSize);
 }

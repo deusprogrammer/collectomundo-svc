@@ -11,6 +11,7 @@ import javax.inject.Inject;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.data.domain.PageRequest;
 
 import com.trinary.collecto.configs.CouchbaseConfig;
 import com.trinary.collecto.dao.ConsoleRepository;
@@ -38,7 +39,7 @@ public class SpringConsoleService implements ConsoleService {
 	}
 
 	@Override
-	public List<Console> getConsoles() {
+	public List<Console> getConsoles(Integer page, Integer pageSize) {
 		return (List<Console>) consoleDao.findAll();
 	}
 
@@ -76,8 +77,8 @@ public class SpringConsoleService implements ConsoleService {
 	}
 
 	@Override
-	public List<Console> getConsolesByCompany(String company) {
-		return consoleDao.findByCompany(company);
+	public List<Console> getConsolesByCompany(String company, Integer page, Integer pageSize) {
+		return consoleDao.findByCompany(company, new PageRequest(page - 1, pageSize)).getContent();
 	}
 
 }

@@ -42,27 +42,35 @@ public class GameConverter extends ROConverter<GameRO, Game> {
 
 	@Override
 	protected GameRO _addLinks(GameRO object) {
-		URI self = this.getUriInfo()
-				.getBaseUriBuilder()
-				.path(GameResource.class)
-				.path(GameResource.class, "getGame")
-				.build(object.getId());
+		if (object != null && object.getId() != null) {
+			URI self = this.getUriInfo()
+					.getBaseUriBuilder()
+					.path(GameResource.class)
+					.path(GameResource.class, "getGame")
+					.build(object.getId());
+			
+			object.addLink("self", self.toString());
+		}
 		
-		URI console = this.getUriInfo()
-				.getBaseUriBuilder()
-				.path(ConsoleResource.class)
-				.path(ConsoleResource.class, "getConsole")
-				.build(object.getConsole());
+		if (object != null && object.getConsole() != null) {
+			URI console = this.getUriInfo()
+					.getBaseUriBuilder()
+					.path(ConsoleResource.class)
+					.path(ConsoleResource.class, "getConsole")
+					.build(object.getConsole());
+			
+			object.addLink("console", console.toString());
+		}
 		
-		URI company = this.getUriInfo()
-				.getBaseUriBuilder()
-				.path(CompanyResource.class)
-				.path(CompanyResource.class, "getCompany")
-				.build(object.getCompany());
-		
-		object.addLink("self", self.toString());
-		object.addLink("console", console.toString());
-		object.addLink("company", company.toString());
+		if (object != null && object.getCompany() != null) {
+			URI company = this.getUriInfo()
+					.getBaseUriBuilder()
+					.path(CompanyResource.class)
+					.path(CompanyResource.class, "getCompany")
+					.build(object.getCompany());
+			
+			object.addLink("company", company.toString());
+		}
 		
 		return object;
 	}
